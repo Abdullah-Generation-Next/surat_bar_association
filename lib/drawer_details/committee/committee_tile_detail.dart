@@ -10,8 +10,9 @@ import '../../widgets/sharedpref.dart';
 
 class CommitteeDetailScreen extends StatefulWidget {
   final String committeeId;
+  final String committeeName;
 
-  const CommitteeDetailScreen({super.key, required this.committeeId});
+  const CommitteeDetailScreen({super.key, required this.committeeId, required this.committeeName});
 
   @override
   State<CommitteeDetailScreen> createState() => _CommitteeDetailScreenState();
@@ -32,6 +33,11 @@ class _CommitteeDetailScreenState extends State<CommitteeDetailScreen> {
     };
     await committeeDetailData(parameter: parameter).then((value) {
       setState(() {
+        value.data.sort((a, b) {
+          DateTime aDate = DateTime.parse(a!.createdDatetime);
+          DateTime bDate = DateTime.parse(b!.createdDatetime);
+          return bDate.compareTo(aDate);
+        });
         data = value.data;
       });
       // print(value);
@@ -54,9 +60,12 @@ class _CommitteeDetailScreenState extends State<CommitteeDetailScreen> {
       appBar: AppBar(
         iconTheme: IconThemeData(color: Colors.black),
         title: Text(
-          'Co-Opt Member Of Council',
+          '${widget.committeeName}',
           textScaleFactor: 0.9,
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w500),
+          overflow: TextOverflow.ellipsis,
+          softWrap: true,
+          maxLines: 1,
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
         ),
         centerTitle: true,
         backgroundColor: Colors.transparent,
@@ -98,7 +107,7 @@ class _CommitteeDetailScreenState extends State<CommitteeDetailScreen> {
                             Expanded(
                               child: Text(
                                 // 'Name : AJAYKUMAR GONDALIYA ',
-                                'Name : ${data[index]!.name}',
+                                'Name : ${data[index]!.name.isEmpty ? "" : data[index]!.name}',
                                 softWrap: true,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -117,7 +126,7 @@ class _CommitteeDetailScreenState extends State<CommitteeDetailScreen> {
                           children: [
                             Text(
                               // 'Designation Name : Member',
-                              'Designation Name : ${data[index]!.designationName}',
+                              'Designation Name : ${data[index]!.designationName.isEmpty ? "" : data[index]!.designationName}',
                               textScaleFactor: 1.05,
                               style: TextStyle(
                                 // fontSize: 12,
@@ -132,7 +141,7 @@ class _CommitteeDetailScreenState extends State<CommitteeDetailScreen> {
                           children: [
                             Text(
                               // 'Date : 2023-01-28',
-                              'Date : ${data[index]!.createdDatetime}',
+                              'Creation Date : ${data[index]!.createdDatetime.isEmpty ? "" : data[index]!.createdDatetime}',
                               textScaleFactor: 1.05,
                               style: TextStyle(
                                 // fontSize: 12,

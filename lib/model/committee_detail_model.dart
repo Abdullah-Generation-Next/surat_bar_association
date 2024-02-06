@@ -58,18 +58,19 @@ class committeeDetailDatum {
   });
 
   factory committeeDetailDatum.fromJson(Map<String, dynamic> json) => committeeDetailDatum(
-    committeeMemberId: json["committee_member_id"],
-    committeeId: json["committee_id"],
-    memberUserId: json["member_user_id"],
-    name: json["name"],
-    designationId: json["designation_id"],
-    designationName: json["designation_name"],
-    status: json["status"],
-    joiningDate: json["joining_date"],
-    validityPeriod: json["validity_period"],
-    discontinueDate: json["discontinue_date"],
-    remarks: json["remarks"],
-    createdDatetime: json["created_datetime"],
+    committeeMemberId: json["committee_member_id"] ?? "",
+    committeeId: json["committee_id"] ?? "",
+    memberUserId: json["member_user_id"] ?? "",
+    name: json["name"] ?? "",
+    designationId: json["designation_id"] ?? "",
+    designationName: json["designation_name"] ?? "",
+    status: json["status"] ?? "",
+    joiningDate: json["joining_date"] ?? "",
+    validityPeriod: json["validity_period"] ?? "",
+    discontinueDate: json["discontinue_date"] ?? "",
+    remarks: json["remarks"] ?? "",
+    // createdDatetime: json["created_datetime"] ?? "",
+    createdDatetime: _parseCustomDateFormat(json["created_datetime"] ?? ""),
   );
 
   Map<String, dynamic> toJson() => {
@@ -88,12 +89,23 @@ class committeeDetailDatum {
   };
 }
 
+String _parseCustomDateFormat(String dateString) {
+  List<String> parts = dateString.split("/");
+  if (parts.length != 3) {
+    throw FormatException("Invalid date format: $dateString");
+  }
+
+  String isoDate = "${parts[2]}-${parts[1]}-${parts[0]}";
+
+  return isoDate;
+}
+
 enum CreatedDatetime {
   THE_28072021
 }
 
 final createdDatetimeValues = EnumValues({
-  "28/07/2021": CreatedDatetime.THE_28072021
+  "28/07/2021":CreatedDatetime.THE_28072021
 });
 
 enum DesignationName {

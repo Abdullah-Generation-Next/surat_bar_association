@@ -7,7 +7,6 @@ import 'package:shimmer/shimmer.dart';
 import 'package:surat_district_bar_association/drawer_details/committee/committee_tile_detail.dart';
 import 'package:surat_district_bar_association/model/committee_model.dart';
 import 'package:surat_district_bar_association/services/all_api_services.dart';
-
 import '../../model/login_model.dart';
 import '../../widgets/drawer.dart';
 import '../../widgets/media_query_sizes.dart';
@@ -100,8 +99,10 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
           int.parse(committee.createdDatetime.split("/")[2]) ==
               selectedYearFilter)
           .toList();
+        // ..sort((a, b) => a!.createdDatetime.compareTo(b!.createdDatetime));
     } else {
       return List.from(data);
+        // ..sort((a, b) => a!.createdDatetime.compareTo(b!.createdDatetime));
     }
   }
 
@@ -208,7 +209,7 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
                                   hintText: 'Select Category',
                                 ),
                                 style: const TextStyle(color: Colors.black),
-                                items: [null, 2021, 2022, 2023].map((year) {
+                                items: [null, 2024, 2023, 2022, 2021].map((year) {
                                   return DropdownMenuItem<int?>(
                                     value: year,
                                     child: Text(year != null ? year.toString() : "All"),
@@ -286,6 +287,7 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
           IconButton(
             padding: EdgeInsets.only(right: 10),
             icon: Icon(Icons.filter_list),
+            tooltip: 'Filter',
             onPressed: () {
               // Show a year selection dialog or a dropdown menu
               // Let the user choose the year and call filterDataByYear
@@ -357,7 +359,7 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
                                 // 'Committee : Co-Opt Member Of Council',
                                 'Committee : ${filterData!.committeeName}',
                                 softWrap: true,
-                                maxLines: 1,
+                                maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
                                 textScaleFactor: 1.17,
                                 style: TextStyle(
@@ -395,7 +397,8 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
                             ),
                             Text(
                               // 'Puprpose : <p><br></p>',
-                              _parseHtmlString('${filterData.purpose.isNotEmpty ? filterData.purpose : "Purpose Not Available"}'),
+                              // _parseHtmlString('${filterData.purpose.isNotEmpty ? filterData.purpose : "Purpose Not Available"}'),
+                              _parseHtmlString('${filterData.purpose.isNotEmpty ? filterData.purpose : ""}'),
                               textScaleFactor: 1.05,
                               style: TextStyle(
                                 // fontSize: 12,
@@ -417,6 +420,20 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
                             ),
                           ],
                         ),
+                        Padding(padding: EdgeInsets.only(top: 5)),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              // 'Formation : 14',
+                              'Creation Date : ${filterData.createdDatetime}',
+                              textScaleFactor: 1.05,
+                              style: TextStyle(
+                                // fontSize: 12,
+                                  fontWeight: FontWeight.w500),
+                            ),
+                          ],
+                        ),
                         Padding(padding: EdgeInsets.only(top: 10)),
                         SizedBox(
                           width: double.infinity,
@@ -428,7 +445,8 @@ class _CommitteeTileScreenState extends State<CommitteeTileScreen> {
                             child: ElevatedButton(
                               onPressed: () {
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => CommitteeDetailScreen(
-                                  committeeId: filterData.committeeId
+                                  committeeId: filterData.committeeId,
+                                  committeeName: filterData.committeeName,
                                 )));
                               },
                               style: ButtonStyle(

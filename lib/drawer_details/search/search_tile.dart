@@ -1452,12 +1452,36 @@ class _SearchTileScreenState extends State<SearchTileScreen> {
                                               );
                                             },
                                           )
-                                        : Center(
-                                            child: Text(
-                                  "No data",
-                                  style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                        :
+                                // Center(
+                                //             child: Align(
+                                //               alignment: Alignment.topCenter,
+                                //               child: Text(
+                                //                 searchController.text.isNotEmpty ? "\"${searchController.text}\" Search Not Found" : "",
+                                //                 style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                //               ),
+                                //             ),
+                                //
+                                //           ),
+                                searchController.text.isNotEmpty ? Column(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      "\"${searchController.text}\"  ",textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                    ),
+                                    Text(
+                                      "Search Not Found",textAlign: TextAlign.center,
+                                      style: TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+                                    ),
+                                  ],
+                                ) : Center(
+                                  child: Text(
+                                    "No data",
+                                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                                  ),
                                 ),
-                                          ),
                               ),
                             )
                           :
